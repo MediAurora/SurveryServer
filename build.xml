@@ -1,0 +1,56 @@
+<project name="SurveyServer" basedir="." default="build">
+
+	<description>Build script for Iphone SurveyServer</description>
+
+	<!-- ================== -->
+	<!-- === PROPERTIES === -->
+	<!-- ================== -->
+	<property file="build.properties" />
+
+	<!-- =============== -->
+	<!-- === PREPARE === -->
+	<!-- =============== -->
+	<target name="prepare">
+		<mkdir dir="target"/>
+		<mkdir dir="target/SurveyApp"/>
+		<mkdir dir="target/SurveyApp/WEB-INF"/>
+		<mkdir dir="target/SurveyApp/WEB-INF/classes"/>
+		<mkdir dir="target/SurveyApp/WEB-INF/lib"/>
+	</target>
+
+	
+	<!-- ============= -->
+	<!-- === CLEAN === -->
+	<!-- ============= -->
+	<target name="clean" description="removes all generated files">
+		<delete dir="target" />
+	</target>
+	
+	<!-- ================= -->
+	<!-- === CLASSPATH === -->
+	<!-- ================= -->
+	<path id="classpath">
+		<pathelement path="target/SurveyApp/WEB-INF/classes" />
+		<fileset dir="${base.lib.dir}" includes="*.jar" />
+	</path>
+	
+	<!-- =============== -->
+	<!-- === COMPILE === -->
+	<!-- =============== -->
+	<target name="build" depends="prepare" description="full build">
+		<javac srcdir="src" destdir="target/SurveyApp/WEB-INF/classes" debug="on"
+	      source="1.5" target="1.5">
+				<classpath refid="classpath"/>
+		</javac>
+		<copy todir="target/SurveyApp/WEB-INF">
+			<fileset dir="WEB-INF" includes="*.xml"/>
+		</copy>
+		<copy todir="target/SurveyApp/WEB-INF/lib">
+			<fileset dir="lib" includes="*.jar"/>
+		</copy>
+		<jar jarfile="target/SurveyApp.war"
+						basedir="target/SurveyApp" />
+
+	</target>
+	
+</project>
